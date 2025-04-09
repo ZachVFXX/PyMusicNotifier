@@ -1,0 +1,16 @@
+[project]
+name = "pymusicnotifier"
+version = "0.0.1"
+authors = [{ name = "ZachVFX", email = "zachallrd@gmail.com" }]
+description = "A simple notifier when a new song is released."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "notify-py",
+    "python-dotenv>=1.1.0",
+    "requests-cache>=1.2.1",
+    "spotipy>=2.25.1",
+]
+
+[tool.uv.sources]
+notify-py = { git = "https://github.com/ms7m/notify-py.git" }
