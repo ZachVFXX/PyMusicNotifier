@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nouvelle Sortie Musicale</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .email-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: #ffffff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .content h2 {
+      color: #333333;
+    }
+
+    .content p {
+      color: #555555;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .album-cover {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #2575fc;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 12px;
+      color: #999999;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">
+      <h1>🎵 Nouvelle Sortie Disponible !</h1>
+    </div>
+    <div class="content">
+      <h2>{{artist_name}} a sorti un nouveau {{release_type}} !</h2>
+      <p>Hey {{user_name}},</p>
+      <p>L'artiste <strong>{{artist_name}}</strong> a sortie un {{release_type}} intitulé <strong>“{{release_title}}”</strong> le {{release_date}} !</p>
+      <img class="album-cover" src="{{cover_url}}" alt="Pochette {{release_title}}">
+      <p>Tu peux l’écouter dès maintenant sur ta plateforme préférée 🎧</p>
+      <a class="button" href="{{release_link}}" target="_blank">Écouter maintenant</a>
+    </div>
+    <div class="footer">
+      Tu reçois cette notification car tu suis {{artist_name}} dans notre application. <br>
+      <a href="{{unsubscribe_link}}">Se désabonner</a>
+    </div>
+  </div>
+</body>
+</html>

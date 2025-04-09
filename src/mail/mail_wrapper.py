@@ -1,12 +1,11 @@
-from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import smtplib
 import ssl
-
-
 from dotenv import load_dotenv
-
-from protocols import Album
+from protocols import Album, User
 import os
+from jinja2 import Template
 
 load_dotenv()
 
@@ -14,8 +13,8 @@ load_dotenv()
 class NotifierMail:
     def __init__(
         self,
-        mail_from: str,
-        mail_to: str,
+        mail_from: str = os.getenv("MAIL_FROM"),
+        mail_to: str = os.getenv("MAIL_TO"),
         password_mail_from: str = os.getenv("MAIL_PASSWORD"),
         smtp_server: str = "smtp.gmail.com",
         port: int = 465,
@@ -26,14 +25,29 @@ class NotifierMail:
         self.smtp_server = smtp_server
         self.port = port
 
-    def send_notification(self, album: Album):
-        msg = EmailMessage()
+    def send_notification(self, album: Album, user: User):
+        with open("src/mail/mail_template.html", "r", encoding="utf-8") as file:
+            html_template = file.read()
+
+        msg = MIMEMultipart("alternative")
         msg["Subject"] = f"A new {album.type} is release !"
         msg["From"] = self.mail_from
         msg["To"] = self.mail_to
-        msg.set_content(
-            f"A new {album.type} is release by {album.get_artists()}. \nIts name is {album.name}, release on {album.release_date.strftime('%d/%m/%Y')}"
-        )
+
+        data = {
+            "user_name": user.name,
+            "artist_name": album.get_artists(),
+            "release_type": album.type,
+            "release_title": album.name,
+            "cover_url": album.image_url,
+            "release_date": album.release_date.to_date_string(),
+            "release_link": album.link,
+            "unsubscribe_link": "https://tonapp.com/unsubscribe",
+        }
+        template = Template(html_template)
+        html_content = template.render(**data)
+
+        msg.attach(MIMEText(html_content, "html"))
 
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL(self.smtp_server, self.port, context=context) as server:
