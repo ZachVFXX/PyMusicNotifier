@@ -70,3 +70,6 @@ class SpotifyFetch:
         user: dict = self.api.current_user()
         username = user.get("display_name", "Unknown username")
         return User(name=username)
+
+    def __repr__(self) -> str:
+        return f"Spotify {self.get_username().name}"

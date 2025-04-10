@@ -40,5 +40,8 @@ class SoundCloudFetch:
                 return max(disco)
         return None
 
-    def get_username(self) -> str:
+    def get_username(self) -> User:
         return User(name="Zach")
+
+    def __repr__(self) -> str:
+        return f"Soundcloud {self.get_username().name}"

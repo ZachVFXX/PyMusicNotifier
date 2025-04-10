@@ -25,22 +25,25 @@ class MusicNotifier:
                 if album:
                     today = pendulum.today().subtract(days=self.period_to_fetch)
                     if album.release_date >= today:
+                        print(f"New {album.type} by {artist}: {album.name}")
                         self.list_of_new_album.append(album)
 
     def send(self, senders: list[Sender]) -> None:
         send_album = []
+        to_send = []
         if len(self.list_of_new_album) == 0:
             print("No new album")
             return None
         for album in self.list_of_new_album:
             if album.name.lower() not in send_album:
                 send_album.append(album.name.lower())
-                for sender in senders:
-                    sender.send_notification(album, self.user)
+                to_send.append(album)
+        for sender in senders:
+            sender.send_notification(to_send, self.user)
 
 
 def main():
-    musicnotifier = MusicNotifier(2)
+    musicnotifier = MusicNotifier(40)
     musicnotifier.fetch(
         [
             "Neophron",
