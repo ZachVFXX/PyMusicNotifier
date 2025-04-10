@@ -3,7 +3,6 @@ import pendulum
 from mail.mail_wrapper import NotifierMail
 from notifier import Notifier
 from protocols import Album, Fetch, Sender, User
-import os
 
 from soundclouds.soundcloud_wrapper import SoundCloudFetch
 from spotify.spotify_wrapper import SpotifyFetch
@@ -21,10 +20,12 @@ class MusicNotifier:
         self.user = fetcher[0].get_username()
         for artist in artists:
             for fetch in fetcher:
+                print(f"Fetching {artist} with {fetch}")
                 album: Album = fetch.get_last_album_from_artist(artist)
-                today = pendulum.today().subtract(days=self.period_to_fetch)
-                if album.release_date >= today:
-                    self.list_of_new_album.append(album)
+                if album:
+                    today = pendulum.today().subtract(days=self.period_to_fetch)
+                    if album.release_date >= today:
+                        self.list_of_new_album.append(album)
 
     def send(self, senders: list[Sender]) -> None:
         send_album = []
@@ -39,8 +40,21 @@ class MusicNotifier:
 
 
 def main():
-    musicnotifier = MusicNotifier(24)
-    musicnotifier.fetch(["Neophron"], [SpotifyFetch(), SoundCloudFetch()])
+    musicnotifier = MusicNotifier(2)
+    musicnotifier.fetch(
+        [
+            "Neophron",
+            "Femtogo",
+            "Ptite Soeur",
+            "Baby Hayabusa",
+            "Luther",
+            "Khali",
+            "abel31",
+            "Realo",
+            "Wallace Cleaver",
+        ],
+        [SpotifyFetch(), SoundCloudFetch()],
+    )
     musicnotifier.send([Notifier(), NotifierMail()])
 
 

@@ -36,8 +36,8 @@ class SoundCloudFetch:
         id = self.get_user_id_from_artist_name(artist_name)
         if id:
             disco = self.get_artist_discography(id)
-            album = max(disco)
-            return album
+            if disco:
+                return max(disco)
         return None
 
     def get_username(self) -> str:
